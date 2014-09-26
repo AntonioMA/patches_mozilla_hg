@@ -1,0 +1,104 @@
+# HG changeset patch
+# Parent a9a8c2d85dd1ccb636f324fe967540636f01d216
+# User Antonio M. Amaya <amac@tid.es>
+
+diff --git a/dom/messages/SystemMessageInternal.js b/dom/messages/SystemMessageInternal.js
+--- a/dom/messages/SystemMessageInternal.js
++++ b/dom/messages/SystemMessageInternal.js
+@@ -44,17 +44,17 @@ const kMessages =["SystemMessageManager:
+                   "SystemMessageManager:Register",
+                   "SystemMessageManager:Unregister",
+                   "SystemMessageManager:Message:Return:OK",
+                   "SystemMessageManager:AskReadyToRegister",
+                   "SystemMessageManager:HandleMessagesDone",
+                   "child-process-shutdown"]
+ 
+ function debug(aMsg) {
+-  // dump("-- SystemMessageInternal " + Date.now() + " : " + aMsg + "\n");
++  dump("-- SystemMessageInternal " + Date.now() + " : " + aMsg + "\n");
+ }
+ 
+ 
+ let defaultMessageConfigurator = {
+   get mustShowRunningApp() {
+     return false;
+   }
+ };
+@@ -404,17 +404,17 @@ SystemMessageInternal.prototype = {
+                                          true,
+                                          null);
+         }
+         break;
+       }
+       case "SystemMessageManager:Unregister":
+       {
+         debug("Got Unregister from " + aMessage.target +
+-              " innerWinID " + msg.innerWindowID);
++              " innerWinID " + msg.innerWindowID + ". Manifest: " + msg.manifestURL + ". page: " + msg.pageURL);
+         this._removeTargetFromListener(aMessage.target,
+                                        msg.manifestURL,
+                                        false,
+                                        msg.pageURL);
+         break;
+       }
+       case "SystemMessageManager:GetPendingMessages":
+       {
+diff --git a/dom/messages/SystemMessageManager.js b/dom/messages/SystemMessageManager.js
+--- a/dom/messages/SystemMessageManager.js
++++ b/dom/messages/SystemMessageManager.js
+@@ -15,17 +15,17 @@ Cu.import("resource://gre/modules/Servic
+ 
+ const kSystemMessageInternalReady = "system-message-internal-ready";
+ 
+ XPCOMUtils.defineLazyServiceGetter(this, "cpmm",
+                                    "@mozilla.org/childprocessmessagemanager;1",
+                                    "nsISyncMessageSender");
+ 
+ function debug(aMsg) {
+-   // dump("-- SystemMessageManager " + Date.now() + " : " + aMsg + "\n");
++   dump("-- SystemMessageManager " + Date.now() + " : " + aMsg + "\n");
+ }
+ 
+ // Implementation of the DOM API for system messages
+ 
+ function SystemMessageManager() {
+   // If we have a system message handler registered for messages of type
+   // |type|, this._dispatchers[type] equals {handler, messages, isHandling},
+   // where
+@@ -166,16 +166,17 @@ SystemMessageManager.prototype = {
+ 
+     return cpmm.sendSyncMessage("SystemMessageManager:HasPendingMessages",
+                                 { type: aType,
+                                   pageURL: this._pageURL,
+                                   manifestURL: this._manifestURL })[0];
+   },
+ 
+   uninit: function()  {
++    debug("uninit: " + this._manifestURL + ", " + this._pageURL);
+     this._dispatchers = null;
+     this._pendings = null;
+ 
+     if (this._isParentProcess) {
+       Services.obs.removeObserver(this, kSystemMessageInternalReady);
+     }
+ 
+     if (this._isInBrowserElement) {
+@@ -286,17 +287,17 @@ SystemMessageManager.prototype = {
+       if (ready.length == 0 || !ready[0]) {
+         readyToRegister = false;
+       }
+     }
+     if (readyToRegister) {
+       this._registerManifestURL();
+     }
+ 
+-    debug("done");
++    debug("init done: " + this._manifestURL + ", " + this._pageURL);
+   },
+ 
+   observe: function(aSubject, aTopic, aData) {
+     if (aTopic === kSystemMessageInternalReady) {
+       this._registerManifestURL();
+     }
+ 
+     // Call the DOMRequestIpcHelper.observe method.

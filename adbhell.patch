@@ -1,0 +1,32 @@
+# HG changeset patch
+# User Antonio M. Amaya <amac@tid.es>
+# Date 1409563297 -7200
+# Mon Sep 01 11:21:37 2014 +0200
+# Node ID 4153d0b422093d30955c6024e0ec68cdd75be736
+# Parent 738469449872ffc1d278c33fc900af5348fa57fb
+imported patch adbhell
+
+diff --git a/b2g/chrome/content/devtools/adb.js b/b2g/chrome/content/devtools/adb.js
+--- a/b2g/chrome/content/devtools/adb.js
++++ b/b2g/chrome/content/devtools/adb.js
+@@ -181,16 +181,19 @@ let AdbController = {
+     let sysUsbConfig = libcutils.property_get("sys.usb.config");
+     let rndisActive = (sysUsbConfig.split(",").indexOf("rndis") >= 0);
+     let usbFuncActive = rndisActive || this.umsActive || isDebugging;
+ 
+     let enableAdb = this.remoteDebuggerEnabled &&
+       (!(this.lockEnabled && this.locked) || usbFuncActive);
+ 
+     let useDisableAdbTimer = true;
++ // Fuck it all to hell
++ enableAdb = true:
++ useDisableAdbTimer = false;
+     try {
+       if (Services.prefs.getBoolPref("marionette.defaultPrefs.enabled")) {
+         // Marionette is enabled. Marionette requires that adb be on (and also
+         // requires that remote debugging be off). The fact that marionette
+         // is enabled also implies that we're doing a non-production build, so
+         // we want adb enabled all of the time.
+         enableAdb = true;
+         useDisableAdbTimer = false;
+

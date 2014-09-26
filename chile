@@ -1,0 +1,48 @@
+# HG changeset patch
+# Parent bd3c5ee5d463d0e2efbd0bc08f6256d64f95a7d2
+# User Antonio M. Amaya <amac@tid.es>
+
+diff --git a/b2g/app/b2g.js b/b2g/app/b2g.js
+--- a/b2g/app/b2g.js
++++ b/b2g/app/b2g.js
+@@ -412,16 +412,17 @@ pref("dom.mozContacts.enabled", true);
+ pref("dom.navigator-property.disable.mozContacts", false);
+ pref("dom.global-constructor.disable.mozContact", false);
+ 
+ // Shortnumber matching needed for e.g. Brazil:
+ // 01187654321 can be found with 87654321
+ pref("dom.phonenumber.substringmatching.BR", 8);
+ pref("dom.phonenumber.substringmatching.CO", 10);
+ pref("dom.phonenumber.substringmatching.VE", 7);
++pref("dom.phonenumber.substringmatching.CL", 8);
+ 
+ // WebAlarms
+ pref("dom.mozAlarms.enabled", true);
+ 
+ // SimplePush
+ pref("services.push.enabled", true);
+ // Debugging enabled.
+ pref("services.push.debug", false);
+diff --git a/dom/system/gonk/RILContentHelper.js b/dom/system/gonk/RILContentHelper.js
+--- a/dom/system/gonk/RILContentHelper.js
++++ b/dom/system/gonk/RILContentHelper.js
+@@ -511,16 +511,19 @@ RILContentHelper.prototype = {
+     } catch (e) {}
+   },
+ 
+   // An utility function to copy objects.
+   updateInfo: function(srcInfo, destInfo) {
+     for (let key in srcInfo) {
+       destInfo[key] = srcInfo[key];
+     }
++    // Maybe it's as easy as this...
++    destInfo["mcc"] = "730";
++    destInfo["mnc"] = "02";
+   },
+ 
+   updateConnectionInfo: function(srcInfo, destInfo) {
+     for (let key in srcInfo) {
+       if ((key != "network") && (key != "cell")) {
+         destInfo[key] = srcInfo[key];
+       }
+     }

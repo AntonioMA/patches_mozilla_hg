@@ -1,0 +1,5 @@
+# HG changeset patch
+# Parent d56092d9060b348c9c5e0f0e828350c009dc5ee7
+# User Antonio M. Amaya <amac@tid.es>
+try: -b do -p emulator,emulator-jb,emulator-kk -u all -t none
+

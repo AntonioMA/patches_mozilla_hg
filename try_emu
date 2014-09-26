@@ -1,0 +1,5 @@
+# HG changeset patch
+# Parent 871e9ce51bedb914ced3dc6dcb4e61f8fb5d12ac
+# User Antonio M. Amaya <amac@tid.es>
+try: -b do -p emulator -u mochitests -t none
+
