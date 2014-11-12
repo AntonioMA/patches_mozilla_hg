@@ -1,14 +1,9 @@
 adbhell.patch
 recover_store_gecko.patch
-enable-webapps-debug
 try-mochitests-only
 try-chooser
-opentest
 try_emu_all
-last_promise
 try_emu
-bug_update_app
-smessages
 webappslog
 chile
 remove-tcp-perm
