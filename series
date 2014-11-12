@@ -1,7 +1,6 @@
 adbhell.patch
 recover_store_gecko.patch
 enable-webapps-debug
-bug1022791
 bug1044278
 try-mochitests-only
 bug1035867
