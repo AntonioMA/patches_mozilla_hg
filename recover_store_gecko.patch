@@ -1,5 +1,5 @@
 # HG changeset patch
-# Parent 8539aa2e021105edd4849264538f9d2f2ab4642d
+# Parent c60fc2c11c0ea6794546fe108bb5bd7c29a294cc
 # User Antonio M. Amaya <amac@tid.es>
 Recover TID store
 
@@ -27,7 +27,7 @@ diff --git a/b2g/confvars.sh b/b2g/confvars.sh
 diff --git a/config/external/nss/Makefile.in b/config/external/nss/Makefile.in
 --- a/config/external/nss/Makefile.in
 +++ b/config/external/nss/Makefile.in
-@@ -250,16 +250,20 @@ DEFAULT_GMAKE_FLAGS += MODULE_INCLUDES='
+@@ -257,16 +257,20 @@ DEFAULT_GMAKE_FLAGS += MODULE_INCLUDES='
  
  # Work around NSS's MAKE_OBJDIR being racy. See bug #836220
  DEFAULT_GMAKE_FLAGS += MAKE_OBJDIR='$$(INSTALL) -D $$(OBJDIR)'
@@ -673,7 +673,7 @@ new file mode 100644
 diff --git a/configure.in b/configure.in
 --- a/configure.in
 +++ b/configure.in
-@@ -7449,16 +7449,25 @@ MOZ_ARG_ENABLE_BOOL(b2g-camera,
+@@ -7601,16 +7601,25 @@ MOZ_ARG_ENABLE_BOOL(b2g-camera,
      MOZ_B2G_CAMERA=1,
      MOZ_B2G_CAMERA= )
  if test -n "$MOZ_B2G_CAMERA"; then
@@ -702,7 +702,7 @@ diff --git a/configure.in b/configure.in
 diff --git a/mobile/android/confvars.sh b/mobile/android/confvars.sh
 --- a/mobile/android/confvars.sh
 +++ b/mobile/android/confvars.sh
-@@ -57,16 +57,19 @@ MOZ_PAY=1
+@@ -55,16 +55,19 @@ MOZ_PAY=1
  # Enable UI for healthreporter
  MOZ_SERVICES_HEALTHREPORT=1
  
@@ -720,12 +720,12 @@ diff --git a/mobile/android/confvars.sh b/mobile/android/confvars.sh
  # Enable second screen and casting support for external devices.
  MOZ_DEVICES=1
  
- # Enable second screen using native Android libraries
- MOZ_NATIVE_DEVICES=1
+ # Enable second screen using native Android libraries, provided we're
+ # not resource constrained.
 diff --git a/security/apps/AppTrustDomain.cpp b/security/apps/AppTrustDomain.cpp
 --- a/security/apps/AppTrustDomain.cpp
 +++ b/security/apps/AppTrustDomain.cpp
-@@ -182,16 +182,30 @@ AppTrustDomain::GetCertTrust(EndEntityOr
+@@ -196,16 +196,30 @@ AppTrustDomain::GetCertTrust(EndEntityOr
      uint32_t relevantTrustBit = endEntityOrCA == EndEntityOrCA::MustBeCA
                                ? CERTDB_TRUSTED_CA
                                : CERTDB_TRUSTED;

@@ -1,5 +1,7 @@
 adbhell.patch
 recover_store_gecko.patch
+enable-webapps-debug
+bug1022791
 bug1044278
 try-mochitests-only
 bug1035867
@@ -16,5 +18,3 @@ bug1026737
 webappslog
 chile
 remove-tcp-perm
-bug915879
-bug965273
