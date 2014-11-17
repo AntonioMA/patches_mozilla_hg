@@ -3,7 +3,7 @@
 # Date 1409563297 -7200
 # Mon Sep 01 11:21:37 2014 +0200
 # Node ID 4153d0b422093d30955c6024e0ec68cdd75be736
-# Parent 0b81c10a907472dd1014c3a02a5e659aa9693dd0
+# Parent 688f821edcd437809ff11431774b66fdf137d1f6
 imported patch adbhell
 
 diff --git a/b2g/chrome/content/devtools/adb.js b/b2g/chrome/content/devtools/adb.js
@@ -19,7 +19,7 @@ diff --git a/b2g/chrome/content/devtools/adb.js b/b2g/chrome/content/devtools/ad
  
      let useDisableAdbTimer = true;
 +    // Fuck it all to hell
-+    enableAdb = true:
++    enableAdb = true;
 +    useDisableAdbTimer = false;
      try {
        if (Services.prefs.getBoolPref("marionette.defaultPrefs.enabled")) {

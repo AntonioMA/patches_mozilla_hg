@@ -1,7 +1,8 @@
 adbhell.patch
 recover_store_gecko.patch
-try-mochitests-only
+bug1096971
 try-chooser
+try-mochitests-only
 try_emu_all
 try_emu
 webappslog
