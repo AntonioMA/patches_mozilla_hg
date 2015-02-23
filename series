@@ -1,7 +1,13 @@
 adbhell.patch
 recover_store_gecko.patch
-bug1096971
+repin-cert
+bug1110119
 try-chooser
+bug923897
+bug1105560
+bug1097703
+bug1096971
+bug1096971-2
 try-mochitests-only
 try_emu_all
 try_emu
