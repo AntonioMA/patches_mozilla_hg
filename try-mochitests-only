@@ -1,5 +1,0 @@
-# HG changeset patch
-# Parent f80a4719e90930ac559516e74910c06efea1c4e1
-# User Antonio M. Amaya <amac@tid.es>
-try: -b do -p all -u mochitests -t none
-

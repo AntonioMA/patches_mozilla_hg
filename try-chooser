@@ -1,5 +1,0 @@
-# HG changeset patch
-# Parent 4993e8c9ca23de6210011d6548ad1d3b0858c409
-# User Antonio M. Amaya <amac@tid.es>
-try: -b do -p all -u all -t none
-
