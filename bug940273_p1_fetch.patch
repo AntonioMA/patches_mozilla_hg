@@ -1,57 +1,8 @@
 # HG changeset patch
-# Parent 98086da94ccdc88f6de86774ce3d1fa258dc7c44
+# Parent 86d2bb8bb1c95bbfdd19a6faa1b48a55afb5b22f
 # User Ben Kelly <ben@wanderview.com>
 Bug 940273 P1 Fetch changes from maple twig to support Service Worker Cache. r=nsm r=ehsan
 
-diff --git a/dom/fetch/Fetch.h b/dom/fetch/Fetch.h
---- a/dom/fetch/Fetch.h
-+++ b/dom/fetch/Fetch.h
-@@ -96,16 +96,22 @@ template <class Derived> class FetchBody
-  * The pump is always released on the main thread.
-  */
- template <class Derived>
- class FetchBody {
- public:
-   bool
-   BodyUsed() const { return mBodyUsed; }
- 
-+  void
-+  SetBodyUsed()
-+  {
-+    mBodyUsed = true;
-+  }
-+
-   already_AddRefed<Promise>
-   ArrayBuffer(ErrorResult& aRv)
-   {
-     return ConsumeBody(CONSUME_ARRAYBUFFER, aRv);
-   }
- 
-   already_AddRefed<Promise>
-   Blob(ErrorResult& aRv)
-@@ -130,22 +136,16 @@ public:
-   BeginConsumeBodyMainThread();
- 
-   void
-   ContinueConsumeBody(nsresult aStatus, uint32_t aLength, uint8_t* aResult);
- 
-   void
-   CancelPump();
- 
--  void
--  SetBodyUsed()
--  {
--    mBodyUsed = true;
--  }
--
-   // Always set whenever the FetchBody is created on the worker thread.
-   workers::WorkerPrivate* mWorkerPrivate;
- 
-   // Set when consuming the body is attempted on a worker.
-   // Unset when consumption is done/aborted.
-   nsAutoPtr<workers::WorkerFeature> mFeature;
- 
- protected:
 diff --git a/dom/fetch/FetchIPCUtils.h b/dom/fetch/FetchIPCUtils.h
 new file mode 100644
 --- /dev/null

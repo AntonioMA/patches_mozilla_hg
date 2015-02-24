@@ -3,7 +3,7 @@
 # User Nikhil Marathe <nsm.nikhil@gmail.com>
 # Date 1423680692 28800
 # Node ID fb6aeb7a5c3e0ca1e7f38196a6f541b363830b6d
-# Parent 02b8ec4950395bed4e7fa9f656b66cf254e8a6d1
+# Parent e3ca024c28186b14c58aea5d63e13b1da722e09a
 Bug 1132141 - Update storage when ServiceWorker registration fails. r=baku
 
 diff --git a/dom/workers/ServiceWorkerManager.cpp b/dom/workers/ServiceWorkerManager.cpp
@@ -28,7 +28,7 @@ diff --git a/dom/workers/ServiceWorkerManager.cpp b/dom/workers/ServiceWorkerMan
    {
      aWorkerPrivate->AssertIsOnWorkerThread();
      if (aWorkerPrivate->WorkerScriptExecutedSuccessfully()) {
-@@ -2683,9 +2683,41 @@ ServiceWorkerManager::MaybeRemoveRegistr
+@@ -2678,9 +2678,41 @@ ServiceWorkerManager::MaybeRemoveRegistr
  {
    MOZ_ASSERT(aRegistration);
    nsRefPtr<ServiceWorkerInfo> newest = aRegistration->Newest();
@@ -73,7 +73,7 @@ diff --git a/dom/workers/ServiceWorkerManager.cpp b/dom/workers/ServiceWorkerMan
 diff --git a/dom/workers/ServiceWorkerManager.h b/dom/workers/ServiceWorkerManager.h
 --- a/dom/workers/ServiceWorkerManager.h
 +++ b/dom/workers/ServiceWorkerManager.h
-@@ -347,24 +347,17 @@ public:
+@@ -340,24 +340,17 @@ public:
      mServiceWorkerRegistrationInfos.Get(aScope, getter_AddRefs(reg));
      return reg.forget();
    }
