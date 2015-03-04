@@ -3,7 +3,7 @@
 # Date 1409563297 -7200
 # Mon Sep 01 11:21:37 2014 +0200
 # Node ID 4153d0b422093d30955c6024e0ec68cdd75be736
-# Parent 688f821edcd437809ff11431774b66fdf137d1f6
+# Parent c5b90c003be8ec497f063e3d632574e3b06d84ac
 imported patch adbhell
 
 diff --git a/b2g/chrome/content/devtools/adb.js b/b2g/chrome/content/devtools/adb.js
@@ -18,7 +18,7 @@ diff --git a/b2g/chrome/content/devtools/adb.js b/b2g/chrome/content/devtools/ad
        (!(this.lockEnabled && this.locked) || usbFuncActive);
  
      let useDisableAdbTimer = true;
-+    // Fuck it all to hell
++    // FIATH. This is unsecure. But it beats B2G booting just enough to lose ADB
 +    enableAdb = true;
 +    useDisableAdbTimer = false;
      try {

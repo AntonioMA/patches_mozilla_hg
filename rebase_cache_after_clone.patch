@@ -1,5 +1,0 @@
-# HG changeset patch
-# Parent 5cb202d52acdf3049a42f16363dd3220dab442bc
-# User Ben Kelly <ben@wanderview.com>
-The Cache patches need a small rebase after the Clone() patches.
-
