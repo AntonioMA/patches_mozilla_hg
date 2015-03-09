@@ -1,5 +1,5 @@
 # HG changeset patch
-# Parent 69bd92edac73942b7e74e014c90979fa2d5cd108
+# Parent 0f4217321798a936d343bc656fa6712b2e34878e
 # User Ben Kelly <ben@wanderview.com>
 Bug 1110814 P1 Make NS_AsyncCopy() use nsICancelableRunnables so it can operate on Workers. r=froydnj
 

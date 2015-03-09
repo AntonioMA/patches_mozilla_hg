@@ -1,5 +1,5 @@
 # HG changeset patch
-# Parent 04b0891715aba8d53d58927e3c49218f531c344e
+# Parent c158a7e8b3dd34b71c16e93a8c64d2a5c8feeca6
 # User Ben Kelly <ben@wanderview.com>
 Bug 1110814 P3 Evil work around for non-e10s.  CrossProcessPipe currently asserts there.
 
@@ -84,7 +84,7 @@ diff --git a/dom/cache/PCacheTypes.ipdlh b/dom/cache/PCacheTypes.ipdlh
  struct PCacheQueryParams
  {
    bool ignoreSearch;
-@@ -28,16 +29,17 @@ struct PCacheQueryParams
+@@ -27,16 +28,17 @@ struct PCacheQueryParams
  };
  
  struct PCacheReadStream
@@ -241,7 +241,7 @@ new file mode 100644
 diff --git a/dom/cache/TypeUtils.cpp b/dom/cache/TypeUtils.cpp
 --- a/dom/cache/TypeUtils.cpp
 +++ b/dom/cache/TypeUtils.cpp
-@@ -424,20 +424,28 @@ TypeUtils::SerializeCacheStream(nsIInput
+@@ -423,20 +423,28 @@ TypeUtils::SerializeCacheStream(nsIInput
      return;
    }
  
@@ -270,7 +270,7 @@ diff --git a/dom/cache/TypeUtils.cpp b/dom/cache/TypeUtils.cpp
  
      aRv = pipe->Init(nullptr, true /* sending */);
      if (NS_WARN_IF(aRv.Failed())) { return; }
-@@ -473,16 +481,17 @@ TypeUtils::SerializeCacheStream(nsIInput
+@@ -472,16 +480,17 @@ TypeUtils::SerializeCacheStream(nsIInput
      NS_WARNING("Cache got an unsupported body stream.");
      aRv.Throw(NS_ERROR_FAILURE);
      return;

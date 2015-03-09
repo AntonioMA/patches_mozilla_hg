@@ -1,5 +1,5 @@
 # HG changeset patch
-# Parent a39265e60edf74475eca76b37291af398dd8d7bb
+# Parent d9b06c673f806d63b2118ff9cd1ed618085eced8
 # User Kyle Huey <khuey@kylehuey.com>
 
 nsFancyPipe
@@ -25,7 +25,7 @@ diff --git a/dom/ipc/ContentChild.cpp b/dom/ipc/ContentChild.cpp
  
  ContentChild::~ContentChild()
  {
-@@ -760,16 +761,28 @@ ContentChild::InitXPCOM()
+@@ -768,16 +769,28 @@ ContentChild::InitXPCOM()
      // This object is held alive by the observer service.
      nsRefPtr<SystemMessageHandledObserver> sysMsgObserver =
          new SystemMessageHandledObserver();
@@ -54,7 +54,7 @@ diff --git a/dom/ipc/ContentChild.cpp b/dom/ipc/ContentChild.cpp
  }
  
  bool
-@@ -1866,16 +1879,32 @@ ContentChild::ProcessingError(Result aCo
+@@ -1873,16 +1886,32 @@ ContentChild::ProcessingError(Result aCo
              crashReporter->SendAnnotateCrashReport(
                  NS_LITERAL_CSTRING("ipc_channel_error"),
                  reason);
