@@ -1,5 +1,6 @@
 adbhell.patch
 recover_store_gecko.patch
+permissions_log
 testing
 0001-nsFancyPipe-old.patch
 bug1110814_p1_cancelable_asynccopy.patch

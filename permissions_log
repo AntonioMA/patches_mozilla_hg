@@ -1,0 +1,108 @@
+# HG changeset patch
+# Parent 47eede525deef3e19d8bc8cebb0634fb1bd7d36e
+# User Antonio M. Amaya <amac@tid.es>
+
+diff --git a/extensions/cookie/nsPermissionManager.cpp b/extensions/cookie/nsPermissionManager.cpp
+--- a/extensions/cookie/nsPermissionManager.cpp
++++ b/extensions/cookie/nsPermissionManager.cpp
+@@ -1239,28 +1239,33 @@ nsPermissionManager::GetPermissionObject
+                                                mTypeArray.ElementAt(perm.mType),
+                                                perm.mPermission,
+                                                perm.mExpireType,
+                                                perm.mExpireTime);
+   r.forget(aResult);
+   return NS_OK;
+ }
+ 
++
++#define bool2Str(X) (X?"true":"false")
+ nsresult
+ nsPermissionManager::CommonTestPermission(nsIPrincipal* aPrincipal,
+                                           const char *aType,
+                                           uint32_t   *aPermission,
+                                           bool        aExactHostMatch,
+                                           bool        aIncludingSession)
+ {
+   NS_ENSURE_ARG_POINTER(aPrincipal);
+   NS_ENSURE_ARG_POINTER(aType);
+ 
++  //  printf_stderr("AMAC_P: nsPermissionManager::CommonTestPermission: %s, Exact: %s, Including: %s\n", aType, bool2Str(aExactHostMatch), bool2Str(aIncludingSession));
++
+   if (nsContentUtils::IsSystemPrincipal(aPrincipal)) {
+     *aPermission = nsIPermissionManager::ALLOW_ACTION;
++    printf_stderr("AMAC_P: nsPermissionManager::CommonTestPermission: %s, Exact: %s, Including: %s => System Principal, ALLOW\n", aType, bool2Str(aExactHostMatch), bool2Str(aIncludingSession));
+     return NS_OK;
+   }
+ 
+   // Set the default.
+   *aPermission = nsIPermissionManager::UNKNOWN_ACTION;
+ 
+   // For expanded principals, we want to iterate over the whitelist and see
+   // if the permission is granted for any of them.
+@@ -1271,16 +1276,17 @@ nsPermissionManager::CommonTestPermissio
+     NS_ENSURE_SUCCESS(rv, rv);
+ 
+     for (size_t i = 0; i < whitelist->Length(); ++i) {
+       uint32_t perm;
+       rv = CommonTestPermission(whitelist->ElementAt(i), aType, &perm, aExactHostMatch,
+                                 aIncludingSession);
+       NS_ENSURE_SUCCESS(rv, rv);
+       if (perm == nsIPermissionManager::ALLOW_ACTION) {
++        printf_stderr("AMAC_P: nsPermissionManager::CommonTestPermission R2: %s, Exact: %s, Including: %s => %d\n", aType, bool2Str(aExactHostMatch), bool2Str(aIncludingSession), perm);
+         *aPermission = perm;
+         return NS_OK;
+       } else if (perm == nsIPermissionManager::PROMPT_ACTION) {
+         // Store it, but keep going to see if we can do better.
+         *aPermission = perm;
+       }
+     }
+ 
+@@ -1289,39 +1295,47 @@ nsPermissionManager::CommonTestPermissio
+ 
+   nsAutoCString host;
+   nsresult rv = GetHostForPrincipal(aPrincipal, host);
+   NS_ENSURE_SUCCESS(rv, rv);
+ 
+   int32_t typeIndex = GetTypeIndex(aType, false);
+   // If type == -1, the type isn't known,
+   // so just return NS_OK
+-  if (typeIndex == -1) return NS_OK;
++  if (typeIndex == -1) {
++    printf_stderr("AMAC_UT: nsPermissionManager::CommonTestPermission: %s, Exact: %s, Including: %s. Host: %s\n", aType, bool2Str(aExactHostMatch), bool2Str(aIncludingSession),
++                  host.get());
++    return NS_OK;
++  }
+ 
+   uint32_t appId;
+   rv = aPrincipal->GetAppId(&appId);
+   NS_ENSURE_SUCCESS(rv, rv);
+ 
+   bool isInBrowserElement;
+   rv = aPrincipal->GetIsInBrowserElement(&isInBrowserElement);
+   NS_ENSURE_SUCCESS(rv, rv);
+ 
+   PermissionHashKey* entry = GetPermissionHashKey(host, appId, isInBrowserElement,
+                                                   typeIndex, aExactHostMatch);
+   if (!entry ||
+       (!aIncludingSession &&
+        entry->GetPermission(typeIndex).mNonSessionExpireType ==
+          nsIPermissionManager::EXPIRE_SESSION)) {
++    printf_stderr("AMAC_P: nsPermissionManager::CommonTestPermission R2: %s, Exact: %s, Including: %s. Host: %s, isInBrowser: %s, appId: %d => Found: %s\n", aType, bool2Str(aExactHostMatch), bool2Str(aIncludingSession), 
++                  host.get(), bool2Str(isInBrowserElement), appId, bool2Str(entry));
+     return NS_OK;
+   }
+ 
+   *aPermission = aIncludingSession
+                    ? entry->GetPermission(typeIndex).mPermission
+                    : entry->GetPermission(typeIndex).mNonSessionPermission;
+ 
++    printf_stderr("AMAC_P: nsPermissionManager::CommonTestPermission R2: %s, Exact: %s, Including: %s. Host: %s, isInBrowser: %s, appId: %d => %d\n", aType, bool2Str(aExactHostMatch), bool2Str(aIncludingSession), 
++                  host.get(), bool2Str(isInBrowserElement), appId, *aPermission);
+   return NS_OK;
+ }
+ 
+ // Returns PermissionHashKey for a given { host, appId, isInBrowserElement } tuple.
+ // This is not simply using PermissionKey because we will walk-up domains in
+ // case of |host| contains sub-domains.
+ // Returns null if nothing found.
+ // Also accepts host on the format "<foo>". This will perform an exact match
